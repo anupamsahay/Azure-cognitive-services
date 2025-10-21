@@ -1,0 +1,34 @@
+Resources
+| where type == "microsoft.cognitiveservices/accounts"
+| extend ServiceCategory = case(
+    kind contains "OpenAI", "Azure OpenAI",
+    kind contains "ComputerVision", "Computer Vision",
+    kind contains "Face", "Face API",
+    kind contains "TextAnalytics", "Text Analytics",
+    kind contains "LUIS", "Language Understanding",
+    kind contains "TextTranslation", "Translator",
+    kind contains "FormRecognizer", "Form Recognizer",
+    kind contains "ContentModerator", "Content Moderator",
+    kind contains "CustomVision", "Custom Vision",
+    kind contains "AnomalyDetector", "Anomaly Detector",
+    kind contains "Personalizer", "Personalizer",
+    kind contains "QnAMaker", "QnA Maker",
+    kind contains "SpeechServices", "Speech Services",
+    kind contains "CognitiveServices", "Multi-Service",
+    "Other"
+)
+| project 
+    ServiceName = name,
+    ServiceCategory,
+    ServiceKind = kind,
+    ResourceGroup = resourceGroup,
+    Location = location,
+    SkuName = sku.name,
+    SkuTier = sku.tier,
+    Endpoint = properties.endpoint,
+    CustomSubDomain = properties.customSubDomainName,
+    PublicNetworkAccess = properties.publicNetworkAccess,
+    ProvisioningState = properties.provisioningState,
+    CreatedAt = systemData.createdAt,
+    LastModifiedAt = systemData.lastModifiedAt
+| order by ServiceCategory, ServiceName
