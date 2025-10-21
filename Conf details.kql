@@ -1,0 +1,72 @@
+Resources
+| where type == "microsoft.cognitiveservices/accounts"
+| project 
+    // Basic Information
+    ServiceName = name,
+    ResourceId = id,
+    ResourceGroup = resourceGroup,
+    Location = location,
+    SubscriptionId = subscriptionId,
+    Tags = tags,
+    Kind = kind,
+    Sku = sku,
+    
+    // Service Details
+    ServiceType = properties.provisioningState,
+    Endpoint = properties.endpoint,
+    InternalId = properties.internalId,
+    
+    // Capabilities
+    Capabilities = properties.capabilities,
+    
+    // API Properties
+    ApiProperties = properties.apiProperties,
+    StatisticsEnabled = properties.apiProperties.statisticsEnabled,
+    QnaRuntimeEndpoint = properties.apiProperties.qnaRuntimeEndpoint,
+    QnaAzureSearchEndpointKey = properties.apiProperties.qnaAzureSearchEndpointKey,
+    
+    // Custom Subdomain
+    CustomSubDomainName = properties.customSubDomainName,
+    
+    // Network Configuration
+    PublicNetworkAccess = properties.publicNetworkAccess,
+    NetworkAcls = properties.networkAcls,
+    PrivateEndpointConnections = properties.privateEndpointConnections,
+    AllowedFqdnList = properties.allowedFqdnList,
+    
+    // Encryption
+    Encryption = properties.encryption,
+    EncryptionKeySource = properties.encryption.keySource,
+    
+    // User Owned Storage
+    UserOwnedStorage = properties.userOwnedStorage,
+    
+    // Disable Local Auth
+    DisableLocalAuth = properties.disableLocalAuth,
+    
+    // Restore Settings
+    Restore = properties.restore,
+    
+    // Restrictions
+    RestrictOutboundNetworkAccess = properties.restrictOutboundNetworkAccess,
+    
+    // Deletion info
+    ScheduledPurgeDate = properties.scheduledPurgeDate,
+    DeletionDate = properties.deletionDate,
+    
+    // Migration Token
+    MigrationToken = properties.migrationToken,
+    
+    // System Data
+    SystemData = systemData,
+    CreatedBy = systemData.createdBy,
+    CreatedAt = systemData.createdAt,
+    LastModifiedBy = systemData.lastModifiedBy,
+    LastModifiedAt = systemData.lastModifiedAt,
+    
+    // Provisioning State
+    ProvisioningState = properties.provisioningState,
+    
+    // Raw Properties
+    AllProperties = properties
+| order by ServiceName asc
