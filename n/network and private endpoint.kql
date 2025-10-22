@@ -1,0 +1,34 @@
+Resources
+| where type == "microsoft.cognitiveservices/accounts"
+| extend 
+    ServiceName = name,
+    ServiceKind = kind,
+    SkuName = sku.name,
+    SkuTier = sku.tier,
+    SkuCapacity = sku.capacity
+| mv-expand privateEndpoint = properties.privateEndpointConnections
+| extend 
+    PrivateEndpointId = privateEndpoint.properties.privateEndpoint.id,
+    PrivateEndpointStatus = privateEndpoint.properties.privateLinkServiceConnectionState.status,
+    PrivateEndpointDescription = privateEndpoint.properties.privateLinkServiceConnectionState.description,
+    PrivateEndpointProvisioningState = privateEndpoint.properties.provisioningState
+| project 
+    ServiceName,
+    ResourceId = id,
+    ResourceGroup = resourceGroup,
+    Location = location,
+    SubscriptionId = subscriptionId,
+    ServiceKind,
+    SkuName,
+    SkuTier,
+    SkuCapacity,
+    Endpoint = properties.endpoint,
+    CustomSubDomainName = properties.customSubDomainName,
+    PublicNetworkAccess = properties.publicNetworkAccess,
+    PrivateEndpointId,
+    PrivateEndpointStatus,
+    PrivateEndpointDescription,
+    PrivateEndpointProvisioningState,
+    DisableLocalAuth = properties.disableLocalAuth,
+    ProvisioningState = properties.provisioningState
+| order by ServiceName, PrivateEndpointId
